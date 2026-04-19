@@ -175,7 +175,7 @@ MIT — see [LICENSE](LICENSE) for details.
 ## Support
 
 - 🐛 **Report Issues:** [GitHub Issues](https://github.com/miller-dota/k-07-piano/issues)
-- 🌐 **Live Demo:** [yourusername.github.io/k-07-piano](https://miller-dota.github.io/k-07-piano)
+- 🌐 **Live Demo:** [miller-dota.github.io/k-07-piano](https://miller-dota.github.io/k-07-piano)
 
 ---
 

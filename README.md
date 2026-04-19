@@ -7,7 +7,7 @@ A pixel-faithful interactive browser piano inspired by the **K-07** hardware key
 Built on [Tone.js](https://tonejs.github.io/), it handles audio synthesis, polyphony, and octave management automatically. One click to play, zero friction to jam.
 
 ---
-
+<img src="K07 piano.png" alt="isolated" width="200"/>
 ![K-07 Piano Screenshot](https://via.placeholder.com/800x380/edebe4/999999?text=K-07+Piano)
 
 ---

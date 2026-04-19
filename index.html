@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>K-07 Piano</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #edebe4;
+      font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    }
+
+    .scene {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .device {
+      background: #e0ddd5;
+      border-radius: 26px;
+      padding: 14px 16px 16px;
+      width: 420px;
+      box-shadow: 4px 4px 12px rgba(0,0,0,0.13), -2px -2px 8px rgba(255,255,255,0.55);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 13px;
+      padding: 0 2px;
+    }
+
+    .led {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #ffda6e, #f5a020);
+      box-shadow: 0 0 0 2px #d8d5cd, 0 1px 3px rgba(0,0,0,0.2);
+      flex-shrink: 0;
+      transition: box-shadow 0.1s;
+    }
+    .led.lit {
+      box-shadow: 0 0 0 2px #d8d5cd, 0 0 8px 2px #ffcc44, 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .model-name {
+      font-size: 14px;
+      font-weight: 400;
+      color: #a09d96;
+      letter-spacing: 1.5px;
+      margin-left: 10px;
+      flex: 1;
+    }
+
+    .nav-group { display: flex; gap: 5px; }
+
+    .nav-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #d4d1c9;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.12), -1px -1px 4px rgba(255,255,255,0.5);
+      transition: box-shadow 0.1s, transform 0.1s;
+    }
+    .nav-btn:active { transform: scale(0.93); }
+    .nav-btn svg { width: 8px; height: 8px; fill: #9e9b94; }
+
+    .keyboard-shell {
+      background: #d4d1c9;
+      border-radius: 14px;
+      padding: 10px 10px 0;
+      position: relative;
+    }
+
+    .white-keys-row {
+      display: flex;
+      gap: 4px;
+      position: relative;
+      height: 130px;
+    }
+
+    .wkey {
+      flex: 1;
+      background: #f0ede6;
+      border-radius: 0 0 9px 9px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.07s;
+      box-shadow: inset 0 -2px 4px rgba(0,0,0,0.06), 1px 1px 0 rgba(255,255,255,0.6);
+    }
+    .wkey:hover { background: #e8e5de; }
+    .wkey.glow {
+      background: linear-gradient(to bottom, #ffe49a, #ffcf5a);
+      box-shadow: inset 0 -2px 4px rgba(0,0,0,0.08), 0 0 12px rgba(255,200,60,0.4);
+    }
+    .wkey.pressed {
+      background: linear-gradient(to bottom, #ffe49a, #ffcf5a) !important;
+      box-shadow: inset 0 -1px 3px rgba(0,0,0,0.08), 0 0 10px rgba(255,200,60,0.35);
+    }
+
+    .black-keys-overlay {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      height: 78px;
+      pointer-events: none;
+    }
+
+    .bkey {
+      position: absolute;
+      height: 78px;
+      background: #ccc8be;
+      border-radius: 0 0 6px 6px;
+      border: none;
+      cursor: pointer;
+      pointer-events: all;
+      transition: background 0.07s;
+      box-shadow: 1px 2px 4px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15);
+      z-index: 2;
+    }
+    .bkey:hover { background: #c0bcb2; }
+    .bkey.pressed {
+      background: linear-gradient(to bottom, #ffe49a, #ffcf5a);
+      box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+    }
+
+    .device-label {
+      margin-top: 16px;
+      font-size: 13px;
+      color: #888;
+      letter-spacing: 0.5px;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+<div class="scene">
+  <div class="device">
+    <div class="header">
+      <div class="led" id="led"></div>
+      <span class="model-name">K-07</span>
+      <div class="nav-group">
+        <button class="nav-btn" onclick="changeOct(-1)">
+          <svg viewBox="0 0 8 8"><polygon points="6,1 2,4 6,7"/></svg>
+        </button>
+        <button class="nav-btn" onclick="changeOct(1)">
+          <svg viewBox="0 0 8 8"><polygon points="2,1 6,4 2,7"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="keyboard-shell">
+      <div class="white-keys-row" id="wkeys"></div>
+      <div class="black-keys-overlay" id="bkeys"></div>
+    </div>
+  </div>
+  <div class="device-label">Keys</div>
+  <div class="hint" id="hint">Octave 4 · A S D F G H J &nbsp;/&nbsp; W E T Y U</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+<script>
+  let oct = 4, synth = null;
+  let held = new Set();
+
+  const WN = ['C','D','E','F','G','A','B'];
+  const BN = [
+    {note:'C#', after:0}, {note:'D#', after:1},
+    {note:'F#', after:3}, {note:'G#', after:4}, {note:'A#', after:5}
+  ];
+  const wKeys = ['a','s','d','f','g','h','j'];
+  const bKeys = ['w','e',null,'t','y','u'];
+
+  function initSynth() {
+    if (synth) return;
+    synth = new Tone.PolySynth(Tone.Synth, {
+      oscillator: { type: 'triangle8' },
+      envelope: { attack: 0.015, decay: 0.12, sustain: 0.35, release: 0.7 }
+    }).toDestination();
+    synth.volume.value = -6;
+  }
+
+  function pressNote(note, el) {
+    initSynth();
+    if (held.has(note)) return;
+    held.add(note);
+    el?.classList.add('pressed');
+    document.getElementById('led').classList.add('lit');
+    Tone.start().then(() => synth.triggerAttack(note));
+  }
+
+  function releaseNote(note, el) {
+    if (!held.has(note)) return;
+    held.delete(note);
+    el?.classList.remove('pressed');
+    if (!held.size) document.getElementById('led').classList.remove('lit');
+    synth?.triggerRelease(note, '+0.01');
+  }
+
+  function buildKeys() {
+    const wc = document.getElementById('wkeys');
+    const bc = document.getElementById('bkeys');
+    wc.innerHTML = ''; bc.innerHTML = '';
+
+    WN.forEach((n, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'wkey' + (n === 'A' ? ' glow' : '');
+      btn.dataset.note = n + oct;
+      btn.addEventListener('pointerdown', e => { e.preventDefault(); pressNote(n+oct, btn); });
+      btn.addEventListener('pointerup', () => releaseNote(n+oct, btn));
+      btn.addEventListener('pointerleave', () => releaseNote(n+oct, btn));
+      wc.appendChild(btn);
+    });
+
+    requestAnimationFrame(() => {
+      const ws = wc.querySelectorAll('.wkey');
+      const kw = ws[0]?.offsetWidth || 50;
+      const gap = 4;
+      BN.forEach((b) => {
+        const btn = document.createElement('button');
+        btn.className = 'bkey';
+        btn.dataset.note = b.note + oct;
+        btn.style.left = ((b.after + 1) * (kw + gap) - kw * 0.34) + 'px';
+        btn.style.width = Math.round(kw * 0.58) + 'px';
+        btn.addEventListener('pointerdown', e => { e.stopPropagation(); e.preventDefault(); pressNote(b.note+oct, btn); });
+        btn.addEventListener('pointerup', () => releaseNote(b.note+oct, btn));
+        btn.addEventListener('pointerleave', () => releaseNote(b.note+oct, btn));
+        bc.appendChild(btn);
+      });
+    });
+  }
+
+  function changeOct(d) {
+    oct = Math.max(1, Math.min(7, oct + d));
+    document.getElementById('hint').textContent = `Octave ${oct} · A S D F G H J  /  W E T Y U`;
+    buildKeys();
+  }
+
+  const km = {};
+  WN.forEach((n,i) => { km[wKeys[i]] = n; });
+  BN.forEach((b,i) => { if(bKeys[i]) km[bKeys[i]] = b.note; });
+
+  document.addEventListener('keydown', e => {
+    if (e.repeat || e.metaKey) return;
+    const k = e.key.toLowerCase();
+    if (!km[k]) return;
+    const note = km[k] + oct;
+    pressNote(note, document.querySelector(`[data-note="${note}"]`));
+  });
+  document.addEventListener('keyup', e => {
+    const k = e.key.toLowerCase();
+    if (!km[k]) return;
+    const note = km[k] + oct;
+    releaseNote(note, document.querySelector(`[data-note="${note}"]`));
+  });
+
+  buildKeys();
+</script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 # K-07 Piano
 
-![GitHub stars](https://img.shields.io/github/stars/yourusername/k-07-piano?style=flat-square) ![GitHub forks](https://img.shields.io/github/forks/yourusername/k-07-piano?style=flat-square) ![GitHub issues](https://img.shields.io/github/issues/yourusername/k-07-piano?style=flat-square) ![Repo size](https://img.shields.io/github/repo-size/yourusername/k-07-piano?style=flat-square) [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen?style=flat-square)](https://yourusername.github.io/k-07-piano)
+
+![GitHub stars](https://img.shields.io/github/stars/miller-dota/k-07-piano?style=flat-square) ![GitHub forks](https://img.shields.io/github/forks/miller-dota/k-07-piano?style=flat-square) ![GitHub issues](https://img.shields.io/github/issues/miller-dota/k-07-piano?style=flat-square) ![Repo size](https://img.shields.io/github/repo-size/miller-dota/k-07-piano?style=flat-square) [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen?style=flat-square)](https://miller-dota.github.io/k-07-piano)
 
 A pixel-faithful interactive browser piano inspired by the **K-07** hardware keyboard. Play it with your mouse, touch screen, or keyboard — no downloads, no installs, no plugins required.
 
